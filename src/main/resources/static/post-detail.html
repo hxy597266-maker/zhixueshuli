@@ -1,0 +1,524 @@
+<!-- ================= post-detail.html ================= -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帖子详情 - 智学数理</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <script src="js/auth.js"></script>
+    <script src="js/common.js"></script>
+    <style>
+        body {
+            background: #f5f6f7;
+            color: #1a1a1a;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #fff;
+            color: #1890ff;
+            border: 1px solid #1890ff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: #1890ff;
+            color: white;
+        }
+        .post-detail {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .post-meta {
+            margin-left: 12px;
+        }
+        .post-author {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+        }
+        .post-time {
+            font-size: 13px;
+            color: #999;
+            margin-top: 4px;
+        }
+        .post-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            line-height: 1.4;
+        }
+        .post-content {
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 16px;
+            white-space: pre-wrap;
+        }
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            max-height: 600px;
+            object-fit: cover;
+        }
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+            cursor: pointer;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        .action-btn:hover {
+            color: #1890ff;
+        }
+        .action-btn.liked {
+            color: #ff4d4f;
+        }
+        .comment-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .comment-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .comment-input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .comment-input-box input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .comment-input-box button {
+            padding: 12px 24px;
+            background: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .comment-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .comment-author {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        .comment-time {
+            color: #999;
+            font-size: 12px;
+        }
+        .comment-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="nav">
+    <div class="nav-title">智学数理</div>
+    <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="course.html">课程学习</a>
+        <a href="community.html" style="color: #1890ff;">学习社区</a>
+        <a href="profile.html">个人中心</a>
+        <a href="aitool.html">AI工具</a>
+        <span id="loginNav"></span>
+    </div>
+</div>
+
+<!-- 主容器 -->
+<div class="container">
+    <!-- 返回按钮 -->
+    <a href="community.html" class="back-btn">← 返回社区</a>
+
+    <!-- 帖子详情 -->
+    <div id="postDetail"></div>
+
+    <!-- 评论区 -->
+    <div class="comment-section">
+        <h3>评论</h3>
+        <div class="comment-input-box">
+            <input id="commentInput" placeholder="写下你的评论...">
+            <button onclick="addComment()">发送</button>
+        </div>
+        <div id="commentList"></div>
+    </div>
+</div>
+
+<script>
+    let postId = null;
+    let currentPost = null;
+
+    // 从 URL 获取帖子 ID
+    function getPostIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id');
+    }
+
+    // 从 token 获取用户 ID
+    function getUserIdFromToken() {
+        const token = getToken();
+        if (!token) return null;
+
+        try {
+            const payload = token.split('.')[1];
+            const decoded = JSON.parse(atob(payload));
+            return decoded.id || decoded.userId;
+        } catch (e) {
+            console.error('解析 token 失败:', e);
+            return null;
+        }
+    }
+
+    // 加载帖子详情
+    async function loadPostDetail() {
+        postId = getPostIdFromUrl();
+
+        if (!postId) {
+            alert('帖子ID不存在');
+            location.href = 'community.html';
+            return;
+        }
+
+        showLoading('postDetail');
+
+        try {
+            const res = await fetchWithAuth(`/post/detail/${postId}`);
+            const data = await res.json();
+
+            if (data.code !== 200) {
+                alert(data.msg || '帖子不存在');
+                location.href = 'community.html';
+                return;
+            }
+
+            currentPost = data.data;
+            renderPostDetail(currentPost);
+
+            // 加载评论
+            loadPostComments(postId);
+        } catch (error) {
+            console.error('加载失败:', error);
+            alert('加载失败，请重试');
+        }
+    }
+
+    // 渲染帖子详情
+    function renderPostDetail(post) {
+        let imagesHtml = '';
+        if (post.image) {
+            const images = post.image.split(',');
+            imagesHtml = images.map(url =>
+                `<img src="${url}" class="post-image" onclick="window.open(this.src)">`
+            ).join('');
+        }
+
+        let avatarHtml = '';
+        if (post.userAvatar) {
+            avatarHtml = `<img src="${post.userAvatar}" style="width: 100%; height: 100%; object-fit: cover;">`;
+        } else {
+            avatarHtml = (post.username || '匿')[0];
+        }
+
+        const timeStr = post.createTime ? formatCommentTime(post.createTime) : '';
+        const isLiked = post.likedByCurrentUser ? 'liked' : '';
+        const starIcon = post.likedByCurrentUser ? '&#x2B50;' : '&#x2606;';
+
+        // 判断当前用户是否是帖子作者
+        const currentUserId = getUserIdFromToken();
+        const isAuthor = currentUserId && post.userId && currentUserId === post.userId;
+
+        let deleteBtnHtml = '';
+        if (isAuthor) {
+            deleteBtnHtml = `
+                <button onclick="deletePost()" style="margin-left: auto; padding: 8px 16px; background: #ff4d4f; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                    删除帖子
+                </button>
+            `;
+        }
+
+        const html = `
+            <div class="post-detail">
+                <div class="post-header">
+                    <div class="avatar">${avatarHtml}</div>
+                    <div class="post-meta">
+                        <div class="post-author">${post.username || '匿名'}</div>
+                        <div class="post-time">${timeStr}</div>
+                    </div>
+                    ${deleteBtnHtml}
+                </div>
+                <div class="post-title">${post.title}</div>
+                <div class="post-content">${post.content}</div>
+                ${imagesHtml}
+                <div class="post-actions">
+                    <div class="action-btn ${isLiked}" onclick="toggleLike()">
+                        <span style="font-size: 20px;">${starIcon}</span>
+                        <span id="likeCount">${post.likeCount || 0} 点赞</span>
+                    </div>
+                    <div class="action-btn">
+                        <span style="font-size: 20px;">&#x1F4AC;</span>
+                        <span>${post.commentCount || 0} 评论</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('postDetail').innerHTML = html;
+    }
+
+    // 加载帖子评论
+    async function loadPostComments(pid) {
+        const commentListEl = document.getElementById('commentList');
+        if (!commentListEl) {
+            console.error('commentList 元素不存在');
+            return;
+        }
+
+        // 显示 loading
+        commentListEl.innerHTML = `
+            <div class="loading">
+                <div class="loading-spinner"></div>
+            </div>
+        `;
+
+        try {
+            const res = await fetchWithAuth('/comment/list?postId=' + pid);
+            const data = await res.json();
+
+            console.log('帖子详情页 - 评论数据:', data);
+
+            if (data.code !== 200) {
+                commentListEl.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">评论加载失败</div>';
+                return;
+            }
+
+            // 获取当前用户ID
+            const currentUserId = getUserIdFromToken();
+            console.log('当前用户ID:', currentUserId);
+            console.log('帖子作者ID:', currentPost?.userId);
+
+            let html = '';
+            if (data.data.length === 0) {
+                html = '<div style="text-align:center;color:#999;padding:20px;">暂无评论</div>';
+            } else {
+                console.log('帖子详情页 - 评论数量:', data.data.length);
+                data.data.forEach((c, index) => {
+                    console.log(`评论 ${index}:`, c);
+                    const timeStr = c.createTime ? formatCommentTime(c.createTime) : '';
+
+                    // 判断是否可以删除（评论作者或帖子作者）
+                    let deleteBtn = '';
+                    if (currentUserId && (c.userId === currentUserId || currentPost?.userId === currentUserId)) {
+                        console.log('显示删除按钮 - 评论ID:', c.id);
+                        deleteBtn = `<span style="color: #ff4d4f; cursor: pointer; margin-left: 10px; font-size: 12px; user-select: none;" onclick="event.stopPropagation(); deleteComment(${c.id}, ${pid})">删除</span>`;
+                    }
+
+                    html += `
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <div class="comment-author">${c.username}</div>
+                                <div style="display: flex; align-items: center;">
+                                    <div class="comment-time">${timeStr}</div>
+                                    ${deleteBtn}
+                                </div>
+                            </div>
+                            <div class="comment-text">${c.content}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            console.log('生成的 HTML:', html);
+            commentListEl.innerHTML = html;
+        } catch (error) {
+            console.error('加载评论失败:', error);
+            commentListEl.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">评论加载失败</div>';
+        }
+    }
+
+    // 删除评论
+    async function deleteComment(commentId, postId) {
+        if (!confirm('确定要删除这条评论吗？')) {
+            return;
+        }
+
+        try {
+            const res = await fetchWithAuth(`/comment/delete/${commentId}`, {
+                method: 'DELETE'
+            });
+
+            const data = await res.json();
+            if (data.code === 200) {
+                // 删除成功，重新加载评论列表
+                loadPostComments(postId);
+                // 更新评论数
+                if (currentPost) {
+                    currentPost.commentCount = Math.max(0, (currentPost.commentCount || 0) - 1);
+                    renderPostDetail(currentPost);
+                }
+            } else {
+                alert(data.msg || '删除失败');
+            }
+        } catch (error) {
+            console.error('删除失败:', error);
+            alert('删除出错，请重试');
+        }
+    }
+
+    // 点赞功能
+    async function toggleLike() {
+        try {
+            const res = await fetchWithAuth('/like/add', {
+                method: 'POST',
+                body: JSON.stringify({ postId: postId })
+            });
+
+            const data = await res.json();
+            if (data.code === 200) {
+                // 重新加载帖子详情以更新点赞状态
+                loadPostDetail();
+            } else {
+                alert(data.msg || '点赞失败');
+            }
+        } catch (error) {
+            console.error('点赞失败:', error);
+            alert('点赞出错，请重试');
+        }
+    }
+
+    // 添加评论
+    async function addComment() {
+        const content = document.getElementById('commentInput').value.trim();
+
+        if (!content) {
+            alert('请输入评论内容');
+            return;
+        }
+
+        const inputEl = document.getElementById('commentInput');
+        const buttonEl = inputEl.nextElementSibling;
+
+        inputEl.disabled = true;
+        buttonEl.disabled = true;
+        buttonEl.textContent = '发送中...';
+
+        try {
+            const res = await fetchWithAuth('/comment/add', {
+                method: 'POST',
+                body: JSON.stringify({ postId: postId, content: content })
+            });
+
+            const data = await res.json();
+            if (data.code === 200) {
+                inputEl.value = '';
+                // 重新加载评论列表
+                loadPostComments(postId);
+                // 更新帖子的评论数
+                if (currentPost) {
+                    currentPost.commentCount = (currentPost.commentCount || 0) + 1;
+                    renderPostDetail(currentPost);
+                }
+            } else {
+                alert(data.msg || '评论失败');
+            }
+        } catch (error) {
+            console.error('评论失败:', error);
+            alert('评论出错，请重试');
+        } finally {
+            inputEl.disabled = false;
+            buttonEl.disabled = false;
+            buttonEl.textContent = '发送';
+        }
+    }
+
+    // 删除帖子
+    async function deletePost() {
+        if (!confirm('确定要删除这个帖子吗？此操作不可恢复！')) {
+            return;
+        }
+
+        try {
+            const res = await fetchWithAuth(`/post/delete/${postId}`, {
+                method: 'DELETE'
+            });
+
+            const data = await res.json();
+            if (data.code === 200) {
+                alert('删除成功');
+                location.href = 'community.html';
+            } else {
+                alert(data.msg || '删除失败');
+            }
+        } catch (error) {
+            console.error('删除失败:', error);
+            alert('删除出错，请重试');
+        }
+    }
+
+    // 必须登录
+    if (!isLoggedIn()) {
+        alert('请先登录');
+        location.href = 'login.html';
+    }
+
+    // 页面初始化
+    window.onload = function() {
+        loadPostDetail();
+        loadUserInfo();
+    }
+</script>
+
+</body>
+</html>

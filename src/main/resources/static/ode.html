@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>常微分方程 | 智学数理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+        .main-container {
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f8f8f8;
+            min-height: calc(100vh - 56px);
+            border-right: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .sidebar h3 {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+        }
+        .sidebar a.active {
+            background-color: #4a6ee0;
+            color: white;
+        }
+        .sidebar a:hover {
+            background-color: #e8e8e8;
+        }
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            background-color: #fff;
+        }
+        .content-area h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .content-area p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .content-area ul, .content-area ol {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background-color: #f0f8e8;
+            border: 1px solid #c8e6c9;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: Consolas,monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 15px 0;
+            color: #333;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow: auto;
+            margin: 15px 0;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        blockquote {
+            background: #f9f9f9;
+            padding: 10px 15px;
+            border-left: 4px solid #ccc;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="course.html">← 返回课程列表</a>
+    <span>常微分方程教程</span>
+</header>
+
+<div class="main-container">
+    <div class="sidebar">
+        <h3>常微分方程</h3>
+        <a href="#intro" class="active" onclick="showSection('intro')">课程简介</a>
+        <a href="#first" onclick="showSection('first')">一阶微分方程</a>
+        <a href="#second" onclick="showSection('second')">二阶微分方程</a>
+    </div>
+
+    <div class="content-area">
+        <!-- 简介 -->
+        <div id="intro" class="section active">
+            <h2>常微分方程简介</h2>
+            <p>常微分方程（Ordinary Differential Equations，ODE）是微积分的重要应用分支，研究包含**一元函数及其导数**的方程。</p>
+            <p>它广泛用于物理、力学、电子、控制、生物、经济等领域，用于描述随时间/空间变化的动态系统。</p>
+
+            <h3>核心内容</h3>
+            <ul>
+                <li>一阶常微分方程：可分离、齐次、线性、伯努利方程</li>
+                <li>二阶线性微分方程：齐次、非齐次、常系数解法</li>
+                <li>微分方程解的存在唯一性定理</li>
+                <li>线性微分方程组、幂级数解法</li>
+            </ul>
+
+            <h3>应用领域</h3>
+            <ul>
+                <li>物理：运动、振动、电路、热传导</li>
+                <li>工程：自动控制、信号处理、系统建模</li>
+                <li>计算机：数值模拟、动力学系统</li>
+                <li>生物/经济：种群增长、经济增长模型</li>
+            </ul>
+        </div>
+
+        <!-- 一阶微分方程 -->
+        <div id="first" class="section">
+            <h2>一阶常微分方程</h2>
+            <hr>
+            <p>一阶微分方程只包含**一阶导数**，是最基础、最常用的类型。</p>
+
+            <h3>主要类型与解法</h3>
+            <ul>
+                <li>可分离变量方程：dy/dx = f(x)g(y)，分离变量后积分</li>
+                <li>齐次方程：可化为 dy/dx = φ(y/x)，令 u=y/x 换元</li>
+                <li>一阶线性方程：y’+P(x)y=Q(x)，用常数变易法/公式法</li>
+                <li>伯努利方程：y’+P(x)y=Q(x)yⁿ，换元化为线性方程</li>
+            </ul>
+
+            <h3>一阶线性方程通解公式</h3>
+            <div class="code-block">
+                y = e^(-∫Pdx) [ ∫Q e^(∫Pdx) dx + C ]
+            </div>
+        </div>
+
+        <!-- 二阶微分方程 -->
+        <div id="second" class="section">
+            <h2>二阶常系数线性微分方程</h2>
+            <hr>
+            <p>二阶常系数线性微分方程是工程与物理中最常用的方程，结构清晰、解法固定。</p>
+
+            <h3>标准形式</h3>
+            <ul>
+                <li>齐次：y'' + py' + qy = 0</li>
+                <li>非齐次：y'' + py' + qy = f(x)</li>
+            </ul>
+
+            <h3>解法步骤</h3>
+            <ul>
+                <li>写出特征方程：r² + pr + q = 0</li>
+                <li>根据根的类型（两不同实根、重根、共轭复根）写通解</li>
+                <li>非齐次方程：齐次通解 + 特解</li>
+            </ul>
+
+            <h3>典型示例</h3>
+            <div class="code-block">
+                方程：y'' - 3y' + 2y = 0
+                特征方程：r²-3r+2=0 → r1=1, r2=2
+                通解：y = C1 e^x + C2 e^(2x)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSection(id){
+        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+</script>
+<script>
+    const baseUrl = "/zhixueshuli";
+</script>
+<script>
+    function finishStudy(){
+        let uname = localStorage.getItem("username");
+        fetch(baseUrl + "/studyCourse",{
+            method:"POST",
+            headers:{"Content-Type":"application/x-www-form-urlencoded"},
+            body:"username="+uname+"&course=常微分方程"
+        })
+        .then(()=>{
+            alert("已记录常微分方程学习完成");
+        })
+    }
+</script>
+</body>
+</html>

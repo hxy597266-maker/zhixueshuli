@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>离散数学 | 智学数理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+        .main-container {
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f8f8f8;
+            min-height: calc(100vh - 56px);
+            border-right: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .sidebar h3 {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+        }
+        .sidebar a.active {
+            background-color: #4a6ee0;
+            color: white;
+        }
+        .sidebar a:hover {
+            background-color: #e8e8e8;
+        }
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            background-color: #fff;
+        }
+        .content-area h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .content-area p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .content-area ul, .content-area ol {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background-color: #f0f8e8;
+            border: 1px solid #c8e6c9;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 15px 0;
+            color: #333;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow: auto;
+            margin: 15px 0;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        blockquote {
+            background: #f9f9f9;
+            padding: 10px 15px;
+            border-left: 4px solid #ccc;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="course.html">← 返回课程列表</a>
+    <span>离散数学教程</span>
+</header>
+
+<div class="main-container">
+    <div class="sidebar">
+        <h3>离散数学</h3>
+        <a href="#intro" class="active" onclick="showSection('intro')">离散数学简介</a>
+        <a href="#logic" onclick="showSection('logic')">命题逻辑与推理</a>
+        <a href="#set" onclick="showSection('set')">集合与关系</a>
+    </div>
+
+    <div class="content-area">
+        <!-- 离散数学简介 -->
+        <div id="intro" class="section active">
+            <h2>离散数学简介</h2>
+            <p>离散数学是研究离散量的结构及其相互关系的数学学科，是现代数学的一个重要分支，也是计算机科学、人工智能、数据科学等专业的核心基础课程。</p>
+            <p>离散数学所研究的对象是离散的、不连续的结构，如整数、集合、图、逻辑命题等，与研究连续量的数学分析形成鲜明对比。</p>
+
+            <h2>主要研究内容</h2>
+            <ul>
+                <li>数理逻辑：命题逻辑、谓词逻辑、推理理论</li>
+                <li>集合论：集合、关系、函数、等价与偏序</li>
+                <li>图论：图、树、路径、网络结构</li>
+                <li>代数结构：群、环、域、布尔代数</li>
+                <li>组合数学：计数、排列、组合、递推关系</li>
+            </ul>
+
+            <h2>重要作用</h2>
+            <p><strong>计算机科学的基础：</strong></p>
+            <p>离散数学为数据结构、算法、数据库、操作系统、编译原理、人工智能、密码学等课程提供数学基础。</p>
+
+            <p><strong>逻辑思维训练：</strong></p>
+            <p>通过学习离散数学，可以培养严谨的逻辑推理、抽象建模、结构分析和证明能力。</p>
+
+            <p><strong>算法与计算理论：</strong></p>
+            <p>离散数学是算法设计、计算复杂度、形式语言与自动机的理论来源。</p>
+
+            <h2>应用领域</h2>
+            <ul>
+                <li>计算机程序与算法设计</li>
+                <li>数据库系统与关系模型</li>
+                <li>网络与通信结构</li>
+                <li>密码学与信息安全</li>
+                <li>人工智能与知识表示</li>
+                <li>数字电路与逻辑设计</li>
+            </ul>
+        </div>
+
+        <!-- 命题逻辑与推理 -->
+        <div id="logic" class="section">
+            <h2>命题逻辑与推理</h2>
+            <hr>
+            <h3>命题</h3>
+            <p>命题是具有唯一真值的陈述句，真值只有两种：真（True）或假（False）。</p>
+            <ul>
+                <li>真命题：真值为真</li>
+                <li>假命题：真值为假</li>
+                <li>不能判断真假的句子不是命题</li>
+            </ul>
+
+            <h3>命题联结词</h3>
+            <p>用于将原子命题组合为复合命题：</p>
+            <ul>
+                <li>否定 ¬：非 p</li>
+                <li>合取 ∧：p 且 q</li>
+                <li>析取 ∨：p 或 q</li>
+                <li>蕴含 →：如果 p，那么 q</li>
+                <li>等价 ↔：p 当且仅当 q</li>
+            </ul>
+
+            <h3>推理规则</h3>
+            <p>逻辑推理是从已知命题推出新命题的过程，常用推理规则：</p>
+            <ul>
+                <li>假言推理：p→q，p ⇒ q</li>
+                <li>拒取式：p→q，¬q ⇒ ¬p</li>
+                <li>假言三段论：p→q，q→r ⇒ p→r</li>
+            </ul>
+
+            <h3>逻辑表达式示例</h3>
+            <div class="code-block">
+                如果今天下雨，那么地面会湿。
+                今天下雨。
+                --------------------------------
+                结论：地面会湿。
+
+                符号化：
+                p→q
+                p
+                ∴ q
+            </div>
+        </div>
+
+        <!-- 集合与关系 -->
+        <div id="set" class="section">
+            <h2>集合与关系</h2>
+            <p>集合是离散数学最基础的概念，是由确定、可区分的对象汇集而成的整体。</p>
+
+            <h3>集合的表示</h3>
+            <ul>
+                <li>列举法：{1,2,3,4,5}</li>
+                <li>描述法：{x | x 是正整数}</li>
+            </ul>
+
+            <h3>集合的基本运算</h3>
+            <ul>
+                <li>并集 A∪B：属于 A 或属于 B 的元素</li>
+                <li>交集 A∩B：同时属于 A 和 B 的元素</li>
+                <li>差集 A−B：属于 A 但不属于 B 的元素</li>
+                <li>补集 Ā：全集 U 中不属于 A 的元素</li>
+            </ul>
+
+            <h3>二元关系</h3>
+            <p>关系是描述两个集合元素之间联系的数学结构，常用性质：</p>
+            <ul>
+                <li>自反性</li>
+                <li>对称性</li>
+                <li>传递性</li>
+                <li>反自反、反对称</li>
+            </ul>
+
+            <h3>关系的分类</h3>
+            <ul>
+                <li>等价关系：自反、对称、传递</li>
+                <li>偏序关系：自反、反对称、传递</li>
+            </ul>
+
+            <h3>集合运算示例</h3>
+            <div class="code-block">
+                A = {1,2,3}
+                B = {3,4,5}
+
+                A∪B = {1,2,3,4,5}
+                A∩B = {3}
+                A−B = {1,2}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+</script>
+<script>
+    const baseUrl = "/zhixueshuli";
+</script>
+<script>
+    function finishStudy(){
+        let uname = localStorage.getItem("username");
+        fetch(baseUrl + "/studyCourse",{
+            method:"POST",
+            headers:{"Content-Type":"application/x-www-form-urlencoded"},
+            body:"username="+uname+"&course=离散数学"
+        })
+        .then(()=>{
+            alert("已记录离散数学学习完成");
+        })
+    }
+</script>
+</body>
+</html>

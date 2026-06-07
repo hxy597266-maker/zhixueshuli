@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>智学数理 - 课程学习</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "微软雅黑", sans-serif; background-color: #f0f5ff; }
+        /* 导航栏 */
+        .nav { background: #2c3e50; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-title { font-size: 22px; font-weight: bold; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; }
+        .nav-links a:hover { color: #667eea; }
+        /* 页面标题 */
+        .page-title { max-width: 1200px; margin: 30px auto 0; padding: 0 20px; color: #2c3e50; }
+        /* 课程卡片区域 */
+        .courses { max-width: 1200px; margin: 30px auto 50px; padding: 0 20px; }
+        .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .course-card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .course-card:hover { transform: translateY(-5px); }
+        .course-card h3 { color: #2c3e50; margin-bottom: 12px; font-size: 18px; }
+        .course-card p { color: #666; margin-bottom: 18px; line-height: 1.6; }
+        .course-card a { color: #667eea; text-decoration: none; font-weight: bold; }
+        .course-card a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<div class="nav">
+    <div class="nav-title">智学数理</div>
+    <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="course.html">课程学习</a>
+        <a href="community.html">学习社区</a>
+        <a href="aitool.html">AI工具</a>
+        <span id="loginNav"></span>
+    </div>
+</div>
+
+<div class="page-title">
+    <h1>全部课程</h1>
+    <p style="color: #666; margin-top: 8px;">高数、线代、离散数学等数理课程一站式学习平台</p>
+</div>
+
+<div class="courses">
+    <div class="course-grid">
+        <div class="course-card">
+            <h3>常微分方程</h3>
+            <p>微分方程求解方法、常微分方程基础理论与应用</p>
+            <a href="ode.html">查看详情 →</a>
+        </div>
+        <div class="course-card">
+            <h3>C语言</h3>
+            <p>编程入门、基础语法、指针与数组，代码实现与习题</p>
+            <a href="c.html">查看详情 →</a>
+        </div>
+        <div class="course-card">
+            <h3>线性代数</h3>
+            <p>矩阵、行列式、向量空间、线性方程组与特征值问题教程</p>
+            <a href="math.html">查看详情 →</a>
+        </div>
+        <div class="course-card">
+            <h3>Java</h3>
+            <p>面型对象编程、Java基础语法、类与对象、常用API教程</p>
+            <a href="java.html">查看详情 →</a>
+        </div>
+        <div class="course-card">
+            <h3>离散数学</h3>
+            <p>集合论、命题逻辑、谓词逻辑、图论与代数系统讲解</p>
+            <a href="discrete.html">查看详情 →</a>
+        </div>
+        <div class="course-card">
+            <h3>数据结构（C语言版）</h3>
+            <p>线性表、栈队列、树、图与排序算法，配套代码实现与习题</p>
+            <a href="ds.html">查看详情 →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const baseUrl = "/zhixueshuli";
+</script>
+
+<script>
+    window.onload = function(){
+        let username = localStorage.getItem("username");
+        let nav = document.getElementById("loginNav");
+
+        if(username){
+            nav.innerHTML = `
+                <a href="profile.html">个人中心</a>
+                <a href="javascript:logout()">退出</a>
+            `;
+        }else{
+            nav.innerHTML = `<a href="login.html">登录/注册</a>`;
+        }
+
+        // 修复：判断 username，不再跳登录
+        if(!localStorage.getItem("username")){
+            location.href = "login.html";
+        }
+    }
+
+    function logout(){
+        localStorage.clear();
+        alert("已退出登录");
+        location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>

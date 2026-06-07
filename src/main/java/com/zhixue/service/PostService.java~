@@ -1,0 +1,5 @@
+package com.zhixue.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+
+public interface PostService extends IService<com.zhixue.entity.Post> {}
